@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 import threading
 from typing import Callable, Optional
 
@@ -22,17 +23,18 @@ logger = logging.getLogger("ManagerMQTT")
 class ManagerMQTT:
     def __init__(
         self,
-        broker: str = "localhost",
-        port: int = 1883,
+        broker: Optional[str] = None,
+        port: Optional[int] = None,
         username: Optional[str] = None,
         password: Optional[str] = None,
         telemetry_topic: str = "telemetry/+/+",
         engine_factory: Callable[[any], RuleEngine] = default_engine,
     ):
-        self.broker = broker
-        self.port = port
-        self.username = username
-        self.password = password
+        # Permite configuração via variáveis de ambiente (útil para Docker)
+        self.broker = broker or os.getenv("MQTT_BROKER", "localhost")
+        self.port = port or int(os.getenv("MQTT_PORT", "1883"))
+        self.username = username or os.getenv("MQTT_USERNAME")
+        self.password = password or os.getenv("MQTT_PASSWORD")
         self.telemetry_topic = telemetry_topic
         self.client = mqtt.Client()
         self.engine = engine_factory(storage)

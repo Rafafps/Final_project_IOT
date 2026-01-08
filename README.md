@@ -92,28 +92,33 @@ sequenceDiagram
     end
 ```
 
-> **Note:** For complete architecture diagrams, see [`docs/architecture_diagrams.md`](docs/architecture_diagrams.md)
+> **Note:** For complete architecture diagrams, see [`docs/architecture/architecture_diagrams.md`](docs/architecture/architecture_diagrams.md)
 
 ## Project Structure
 ```
 Final_project_IOT/
-├── Dockerfile
-├── requirements.txt
-├── REDME.MD
-├── devices/
+├── README.md                    # Main documentation
+├── requirements.txt             # Python dependencies
+├── devices/                     # IoT Devices (emulated)
 │   ├── rain_sensor.py
 │   ├── water_sensor.py
 │   ├── emergency_light.py
 │   └── notification_hub.py
-├── manager/
-│   ├── api_server.py   # FastAPI app (uvicorn entrypoint)
-│   ├── main.py         # Backward-compatible entrypoint
-│   ├── mqtt_client.py  # MQTT bridge + rules engine hook
-│   ├── rules.py        # Threshold-based rules
-│   ├── storage.py      # SQLite persistence
-│   └── device_registry.py
-└── mosquitto/ (config and state if using local broker)
+├── manager/                     # Data Collector & Manager
+│   ├── api_server.py           # FastAPI REST API
+│   ├── mqtt_client.py          # MQTT bridge
+│   ├── rules.py                # Rules engine
+│   ├── storage.py              # SQLite storage
+│   └── device_registry.py      # Device registry
+├── docs/                        # 📚 Documentation
+│   ├── guides/                 # Usage guides
+│   └── architecture/           # Architecture diagrams
+├── presentation/                # 🎤 Presentation materials
+├── docker/                      # 🐳 Docker files
+└── mosquitto/                   # MQTT broker data
 ```
+
+> **See [`STRUCTURE.md`](STRUCTURE.md) for detailed structure and [`docs/README.md`](docs/README.md) for documentation index.**
 
 ## Installation
 1. Clone this repository:
@@ -146,9 +151,18 @@ Final_project_IOT/
   ```
 - Access Swagger docs: `http://localhost:7070/docs`
 
-## Docker (API only)
+## Docker
+
+### Docker Compose (Recomendado)
+```bash
+cd docker
+docker-compose up -d
 ```
-docker build -t aqua_sense .
+See [`docker/DOCKER_COMPOSE_GUIDE.md`](docker/DOCKER_COMPOSE_GUIDE.md) for details.
+
+### Dockerfile (API only)
+```bash
+docker build -f docker/Dockerfile -t aqua_sense .
 docker run -p 7070:7070 --network=host aqua_sense
 ```
 Ensure a MQTT broker is reachable at the configured host (default `localhost:1883`).

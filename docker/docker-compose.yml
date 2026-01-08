@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  # MQTT Broker
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    container_name: aqua_sense_mqtt
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ../mosquitto/config:/mosquitto/config
+      - ../mosquitto/data:/mosquitto/data
+      - ../mosquitto/log:/mosquitto/log
+    networks:
+      - aqua_sense_net
+    restart: unless-stopped
+    # Configuração básica do Mosquitto (sem autenticação para desenvolvimento)
+    command: mosquitto -c /mosquitto/config/mosquitto.conf
+
+  # Manager (Data Collector & REST API)
+  manager:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: aqua_sense_manager
+    ports:
+      - "7070:7070"
+    environment:
+      - MQTT_BROKER=mosquitto
+      - MQTT_PORT=1883
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - mosquitto
+    networks:
+      - aqua_sense_net
+    restart: unless-stopped
+    volumes:
+      - ../manager:/app/manager
+      - ../data:/app/data
+      - ../logs:/app/logs
+    # Aguarda o broker estar pronto
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; s=socket.socket(); s.connect(('mosquitto', 1883)); s.close()"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  aqua_sense_net:
+    driver: bridge
+
+# Nota: Os dispositivos IoT (rain_sensor, water_sensor, etc.)
+# devem ser executados localmente ou em containers separados
+# pois precisam de interação do usuário e logs visíveis.
+# 
+# Para executar os dispositivos:
+# python devices/rain_sensor.py
+# python devices/water_sensor.py
+# python devices/emergency_light.py
+# python devices/notification_hub.py
+

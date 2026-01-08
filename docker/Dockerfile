@@ -6,7 +6,6 @@ LABEL project="AQUA-SENSE - Distributed and IoT Software Architectures"
 WORKDIR /app
 
 COPY ./manager /app/manager
-COPY ./config /app/config
 COPY requirements.txt /app/requirements.txt
 
 RUN pip install --no-cache-dir -r requirements.txt

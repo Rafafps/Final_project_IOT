@@ -1,0 +1,39 @@
+# Estrutura do Projeto AQUA_SENSE
+
+## Organização
+
+📁 docs/              - Documentação técnica
+📁 presentation/      - Materiais de apresentação  
+📁 docker/            - Arquivos Docker
+📁 devices/           - Dispositivos IoT
+📁 manager/           - Data Collector & Manager
+📁 config/            - Configurações
+📁 data/              - Dados persistentes (SQLite)
+📁 logs/              - Logs do sistema
+
+## Documentação Principal
+
+- README.md           - Documentação principal
+- STRUCTURE.md        - Estrutura detalhada do projeto
+- docs/README.md      - Índice da documentação
+
+## Guias Rápidos
+
+- docs/guides/QUICK_START.md    - Comandos rápidos
+- docs/guides/COMANDOS.md       - Guia completo
+- docs/guides/CHECKLIST_PROJETO.md - Checklist
+
+## Diagramas
+
+- docs/architecture/architecture_diagrams.md - Todos os diagramas
+
+## Apresentação
+
+- presentation/PRESENTATION_SLIDES.md - Conteúdo das slides
+- presentation/SLIDES_GUIDE.md       - Como criar slides
+
+## Docker
+
+- docker/docker-compose.yml     - Compose file
+- docker/Dockerfile            - Docker image
+- docker/DOCKER_COMPOSE_GUIDE.md - Guia Docker
