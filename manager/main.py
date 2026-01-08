@@ -1,9 +1,10 @@
 """
-Here I implemented the REST API using FastAPI framework.
-The API exposes endpoints to interact with the AQUA_SENSE system, allowing users to retrieve sensor data,
-manage devices, and configure system settings.
-
-Get for devices, telemetry, rules and alerts. Swagger docs is obrigatory. 
-
-This API represents a northbound interface for external systems to interact with AQUA_SENSE.
+Entry point kept for backward compatibility.
+The real FastAPI application lives in `api_server.py`.
 """
+from .api_server import app  # noqa: F401
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run("manager.api_server:app", host="0.0.0.0", port=7070, reload=True)

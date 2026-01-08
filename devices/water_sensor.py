@@ -57,9 +57,9 @@ def publish_water_level_data():
             "water_level_cm": water_level_cm
         }
         payload = json.dumps(data)
-        mqtt_client.publish(topic.format(device_id=data["deviceId"]), payload)
+        mqtt_client.publish(topic.format(device_id=data["deviceId"]), payload, qos=1)
         logger.info(f"Published water level data: {payload}")
-        time.sleep(interval)
+        stop_event.wait(interval)
 # Signal handler for graceful shutdown
 def signal_handler(sig, frame):
     global stop_event, logger

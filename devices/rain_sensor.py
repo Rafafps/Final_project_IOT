@@ -52,15 +52,15 @@ def publish_rain_data():
     topic = config.get('MQTT', 'topic', fallback='telemetry/rain/{device_id}')
     interval = config.getint('SENSOR', 'interval', fallback=10)
     while not stop_event.is_set():
-        rain_nm = random.randint(0, 100)
+        rain_mm = random.randint(0, 100)
         data = {
             "deviceId": config.get('DEVICE', 'id', fallback='rain-01'),
             "deviceType": "rain_sensor",
             "timestamp": datetime.utcnow().isoformat(),
-            "rain_mm": rain_level
-    }
+            "rain_mm": rain_mm
+        }
         payload = json.dumps(data)
-        mqtt_client.publish(topic, payload, qos = 1)
+        mqtt_client.publish(topic.format(device_id=data["deviceId"]), payload, qos=1)
         logger.info(f"Published rain data: {payload} to topic: {topic}")
         stop_event.wait(interval)
 # Signal handler for graceful shutdown

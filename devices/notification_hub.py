@@ -58,7 +58,7 @@ def on_message(client, userdata, msg):
 # Function to start listening for notifications
 def start_listening():
     global mqtt_client, config, logger, stop_event
-    topic = config.get('MQTT', 'topic', fallback='alerts/+/+')
+    topic = config.get('MQTT', 'topic', fallback='alerts/#')
     mqtt_client.subscribe(topic)
     mqtt_client.on_message = on_message
     logger.info(f"Subscribed to topic: {topic}")

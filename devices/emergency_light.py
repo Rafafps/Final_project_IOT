@@ -60,6 +60,18 @@ def publish_emergency_light_status():
         mqtt_client.publish(topic.format(device_id=data["deviceId"]), payload)
         logger.info(f"Published data: {payload}")
         time.sleep(interval)    
+
+# Handle incoming commands
+def on_message(client, userdata, msg):
+    global logger
+    try:
+        payload = json.loads(msg.payload.decode("utf-8"))
+        action = payload.get("action")
+        reason = payload.get("reason", "")
+        logger.info(f"Received command: action={action}, reason={reason}")
+        print(f"[EmergencyLight] Command received: {action} (reason: {reason})")
+    except Exception as exc:
+        logger.error(f"Error processing command: {exc}")
 # Main function
 def main():
     global config, mqtt_client, logger, stop_event
@@ -76,11 +88,17 @@ def main():
     username = config.get('MQTT', 'username', fallback=None)
     password = config.get('MQTT', 'password', fallback=None)
     mqtt_client = connect_mqtt(broker, port, username, password)
+    # Subscribe to commands
+    command_topic = config.get('MQTT', 'command_topic', fallback='commands/emergency_light/+')
+    mqtt_client.subscribe(command_topic)
+    mqtt_client.on_message = on_message
+    mqtt_client.loop_start()
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
     publisher_thread = threading.Thread(target=publish_emergency_light_status)
     publisher_thread.start()
     publisher_thread.join()
+    mqtt_client.loop_stop()
 # Signal handler for graceful shutdown
 def signal_handler(sig, frame):
     global stop_event, logger

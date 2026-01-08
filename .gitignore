@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+data/*.db
+manager/*.db
+mosquitto/data/*.db
+
+# Logs
+*.log
+logs/
+log/
+*.log.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Mosquitto
+mosquitto/data/
+mosquitto/log/
+
+# Config files (se contiverem senhas)
+# config/*.ini
+
+# Temporary files
+*.tmp
+*.bak
+
