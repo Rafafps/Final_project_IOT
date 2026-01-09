@@ -76,7 +76,7 @@ def on_message(client, userdata, msg):
 def main():
     global config, mqtt_client, logger, stop_event
     parser = argparse.ArgumentParser(description='Emergency Light Emulator')
-    parser.add_argument('--config', type=str, default='config/emergency_light.ini', help='Path to configuration file')
+    parser.add_argument('--config', type=str, default='devices/emergency_light_config.ini', help='Path to configuration file')
     args = parser.parse_args()
     config = load_config(args.config)
     log_file = config.get('LOGGING', 'file', fallback='logs/emergency_light.log')

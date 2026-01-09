@@ -142,3 +142,4 @@ Diagrams must **reflect the actual implementation**. If you show a diagram in th
 3. Export for slides (PNG/SVG)
 4. Practice explaining each diagram
 
+

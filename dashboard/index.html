@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQUA_SENSE - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .status.connected {
+            background: #10b981;
+            color: white;
+        }
+
+        .status.disconnected {
+            background: #ef4444;
+            color: white;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .device-item {
+            padding: 10px;
+            margin: 10px 0;
+            background: #f3f4f6;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+        }
+
+        .device-item h3 {
+            color: #1f2937;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .device-item p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .telemetry-item {
+            padding: 10px;
+            margin: 8px 0;
+            background: #f3f4f6;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .telemetry-item .value {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 18px;
+        }
+
+        .alert-item {
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border-left: 4px solid;
+        }
+
+        .alert-item.flood {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        .alert-item.rain {
+            background: #dbeafe;
+            border-color: #3b82f6;
+        }
+
+        .alert-item h4 {
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .alert-item p {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .refresh-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: #5568d3;
+        }
+
+        .refresh-btn:active {
+            transform: scale(0.98);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #9ca3af;
+        }
+
+        .water-level-bar {
+            width: 100%;
+            height: 30px;
+            background: #e5e7eb;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .water-level-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+            transition: width 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .water-level-fill.high {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+
+        .rain-gauge {
+            width: 100%;
+            height: 30px;
+            background: #e5e7eb;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .rain-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #60a5fa, #3b82f6);
+            transition: width 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .rain-fill.high {
+            background: linear-gradient(90deg, #3b82f6, #1e40af);
+        }
+
+        .timestamp {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌊 AQUA_SENSE Dashboard</h1>
+            <p>Real-time Water Resource Monitoring System</p>
+            <span class="status" id="status">Checking...</span>
+        </header>
+
+        <div class="grid">
+            <!-- Devices Card -->
+            <div class="card">
+                <h2>📱 Devices</h2>
+                <div id="devices-list">
+                    <div class="empty-state">Loading devices...</div>
+                </div>
+                <button class="refresh-btn" onclick="loadDevices()">Refresh</button>
+            </div>
+
+            <!-- Telemetry Card -->
+            <div class="card">
+                <h2>📊 Latest Telemetry</h2>
+                <div id="telemetry-list">
+                    <div class="empty-state">Loading telemetry...</div>
+                </div>
+                <button class="refresh-btn" onclick="loadTelemetry()">Refresh</button>
+            </div>
+
+            <!-- Alerts Card -->
+            <div class="card">
+                <h2>🚨 Recent Alerts</h2>
+                <div id="alerts-list">
+                    <div class="empty-state">Loading alerts...</div>
+                </div>
+                <button class="refresh-btn" onclick="loadAlerts()">Refresh</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:7070';
+
+        // Check API connection
+        async function checkConnection() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                const statusEl = document.getElementById('status');
+                if (data.status === 'ok') {
+                    statusEl.textContent = '🟢 Connected';
+                    statusEl.className = 'status connected';
+                } else {
+                    statusEl.textContent = '🔴 Disconnected';
+                    statusEl.className = 'status disconnected';
+                }
+            } catch (error) {
+                const statusEl = document.getElementById('status');
+                statusEl.textContent = '🔴 Disconnected';
+                statusEl.className = 'status disconnected';
+            }
+        }
+
+        // Load devices
+        async function loadDevices() {
+            try {
+                const response = await fetch(`${API_BASE}/devices`);
+                const devices = await response.json();
+                const container = document.getElementById('devices-list');
+                
+                if (devices.length === 0) {
+                    container.innerHTML = '<div class="empty-state">No devices registered</div>';
+                    return;
+                }
+
+                container.innerHTML = devices.map(device => `
+                    <div class="device-item">
+                        <h3>${device.deviceId}</h3>
+                        <p>Type: ${device.deviceType}</p>
+                        <p>Capabilities: ${device.capabilities?.join(', ') || 'N/A'}</p>
+                        ${device.lastSeen ? `<p class="timestamp">Last seen: ${new Date(device.lastSeen).toLocaleString()}</p>` : ''}
+                    </div>
+                `).join('');
+            } catch (error) {
+                document.getElementById('devices-list').innerHTML = 
+                    '<div class="empty-state">Error loading devices</div>';
+            }
+        }
+
+        // Load telemetry
+        async function loadTelemetry() {
+            try {
+                const response = await fetch(`${API_BASE}/telemetry?limit=10`);
+                const telemetry = await response.json();
+                const container = document.getElementById('telemetry-list');
+                
+                if (telemetry.length === 0) {
+                    container.innerHTML = '<div class="empty-state">No telemetry data</div>';
+                    return;
+                }
+
+                container.innerHTML = telemetry.map(item => {
+                    const payload = typeof item.payload === 'string' ? JSON.parse(item.payload) : item.payload;
+                    const timestamp = new Date(item.ts || payload.timestamp).toLocaleString();
+                    
+                    let content = '';
+                    
+                    if (payload.water_level_cm !== undefined) {
+                        const percentage = Math.min((payload.water_level_cm / 500) * 100, 100);
+                        const isHigh = payload.water_level_cm >= 350;
+                        content = `
+                            <div class="telemetry-item">
+                                <div>
+                                    <strong>${item.device_id}</strong>
+                                    <p>Water Level</p>
+                                </div>
+                                <div class="value">${payload.water_level_cm} cm</div>
+                            </div>
+                            <div class="water-level-bar">
+                                <div class="water-level-fill ${isHigh ? 'high' : ''}" style="width: ${percentage}%">
+                                    ${payload.water_level_cm} cm
+                                </div>
+                            </div>
+                            <p class="timestamp">${timestamp}</p>
+                        `;
+                    } else if (payload.rain_mm !== undefined) {
+                        const percentage = Math.min((payload.rain_mm / 100) * 100, 100);
+                        const isHigh = payload.rain_mm >= 80;
+                        content = `
+                            <div class="telemetry-item">
+                                <div>
+                                    <strong>${item.device_id}</strong>
+                                    <p>Rainfall</p>
+                                </div>
+                                <div class="value">${payload.rain_mm} mm</div>
+                            </div>
+                            <div class="rain-gauge">
+                                <div class="rain-fill ${isHigh ? 'high' : ''}" style="width: ${percentage}%">
+                                    ${payload.rain_mm} mm
+                                </div>
+                            </div>
+                            <p class="timestamp">${timestamp}</p>
+                        `;
+                    } else if (payload.status !== undefined) {
+                        content = `
+                            <div class="telemetry-item">
+                                <div>
+                                    <strong>${item.device_id}</strong>
+                                    <p>Status</p>
+                                </div>
+                                <div class="value">${payload.status}</div>
+                            </div>
+                            <p class="timestamp">${timestamp}</p>
+                        `;
+                    } else {
+                        content = `
+                            <div class="telemetry-item">
+                                <div>
+                                    <strong>${item.device_id}</strong>
+                                    <p>${item.device_type}</p>
+                                </div>
+                            </div>
+                            <p class="timestamp">${timestamp}</p>
+                        `;
+                    }
+                    
+                    return `<div style="margin-bottom: 15px; padding: 10px; background: #f9fafb; border-radius: 5px;">${content}</div>`;
+                }).join('');
+            } catch (error) {
+                document.getElementById('telemetry-list').innerHTML = 
+                    '<div class="empty-state">Error loading telemetry</div>';
+            }
+        }
+
+        // Load alerts
+        async function loadAlerts() {
+            try {
+                const response = await fetch(`${API_BASE}/alerts?limit=10`);
+                const alerts = await response.json();
+                const container = document.getElementById('alerts-list');
+                
+                if (alerts.length === 0) {
+                    container.innerHTML = '<div class="empty-state">No alerts</div>';
+                    return;
+                }
+
+                container.innerHTML = alerts.map(alert => {
+                    const alertClass = alert.alert_type === 'FLOOD_RISK' ? 'flood' : 'rain';
+                    const timestamp = new Date(alert.ts).toLocaleString();
+                    return `
+                        <div class="alert-item ${alertClass}">
+                            <h4>${alert.alert_type}</h4>
+                            <p>${alert.message}</p>
+                            ${alert.device_id ? `<p>Device: ${alert.device_id}</p>` : ''}
+                            <p class="timestamp">${timestamp}</p>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                document.getElementById('alerts-list').innerHTML = 
+                    '<div class="empty-state">Error loading alerts</div>';
+            }
+        }
+
+        // Auto-refresh every 5 seconds
+        function startAutoRefresh() {
+            setInterval(() => {
+                loadDevices();
+                loadTelemetry();
+                loadAlerts();
+                checkConnection();
+            }, 5000);
+        }
+
+        // Initialize
+        checkConnection();
+        loadDevices();
+        loadTelemetry();
+        loadAlerts();
+        startAutoRefresh();
+    </script>
+</body>
+</html>
+

@@ -100,3 +100,4 @@
 - **Draw.IO:** https://app.diagrams.net
 - **Complete documentation:** `architecture_diagrams.md` (in this directory)
 
+

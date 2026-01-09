@@ -72,7 +72,7 @@ def signal_handler(sig, frame):
 def main():
     global config, mqtt_client, logger
     parser = argparse.ArgumentParser(description='Rain Sensor MQTT Publisher')
-    parser.add_argument('--config', type=str, default='config.ini', help='Path to configuration file')
+    parser.add_argument('--config', type=str, default='devices/rain_config.ini', help='Path to configuration file')
     args = parser.parse_args()
     config_file = args.config
     config = load_config(config_file)

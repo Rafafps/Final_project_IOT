@@ -46,6 +46,10 @@ Final_project_IOT/
 │   ├── Dockerfile                 # Manager Docker image
 │   └── DOCKER_COMPOSE_GUIDE.md    # Docker Compose usage guide
 │
+├── 📁 dashboard/                   # 📊 Web Dashboard
+│   ├── index.html                 # Dashboard interface
+│   └── README.md                  # Dashboard usage guide
+│
 ├── 📁 config/                      # ⚙️ Configuration Files
 │   └── (device configurations - optional)
 │

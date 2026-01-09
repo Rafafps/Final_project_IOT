@@ -68,6 +68,7 @@ Final_project_IOT/
   uvicorn manager.api_server:app --host 0.0.0.0 --port 7070
   ```
 - Access Swagger docs: `http://localhost:7070/docs`
+- Access Dashboard: Open `dashboard/index.html` in your browser
 
 ## Docker
 
