@@ -33,7 +33,6 @@ Final_project_IOT/
 │   ├── mqtt_client.py          
 │   ├── rules.py                
 │   ├── storage.py              
-├── presentation
 ├── .gitignore
 ├── README.md
 ├── requirements.txt
