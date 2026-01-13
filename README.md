@@ -268,20 +268,11 @@ Configured in `manager/rules.py`:
 **Problem**: Dashboard needs to show latest data without manual refresh.  
 **Solution**: Implemented auto-refresh every 5 seconds with JavaScript `setInterval`.
 
-## Future Improvements
-
-- [ ] Add MQTT authentication (username/password) for production security
-- [ ] Implement device heartbeat/health monitoring to detect offline devices
-- [ ] Add time-series database (TimescaleDB) for better analytics and historical data
-- [ ] WebSocket support for real-time dashboard updates (push instead of polling)
-- [ ] Multi-tenant support (multiple deployment sites with isolated data)
-- [ ] Machine learning for predictive flood detection based on historical patterns
-
 ## Architecture Diagrams
 
 See `docs/diagrams/` for:
 - Class Diagram: Component relationships
-- Data Flow Sequence Diagram: Message flows
+- Data Flow Sequence Diagram: Senquece flows of commands related to the devices
 - Decision Flow: Rule evaluation logic
 
 ## Author
