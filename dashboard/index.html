@@ -238,7 +238,6 @@
                 </div>
                 <button class="refresh-btn" onclick="loadDevices()">Refresh</button>
             </div>
-
             <!-- Telemetry Card -->
             <div class="card">
                 <h2>📊 Latest Telemetry</h2>
@@ -261,7 +260,6 @@
 
     <script>
         const API_BASE = 'http://localhost:7070';
-
         // Check API connection
         async function checkConnection() {
             try {
@@ -281,7 +279,6 @@
                 statusEl.className = 'status disconnected';
             }
         }
-
         // Load devices
         async function loadDevices() {
             try {
@@ -307,7 +304,6 @@
                     '<div class="empty-state">Error loading devices</div>';
             }
         }
-
         // Load telemetry
         async function loadTelemetry() {
             try {
@@ -384,7 +380,6 @@
                             <p class="timestamp">${timestamp}</p>
                         `;
                     }
-                    
                     return `<div style="margin-bottom: 15px; padding: 10px; background: #f9fafb; border-radius: 5px;">${content}</div>`;
                 }).join('');
             } catch (error) {
@@ -392,7 +387,6 @@
                     '<div class="empty-state">Error loading telemetry</div>';
             }
         }
-
         // Load alerts
         async function loadAlerts() {
             try {
@@ -422,7 +416,6 @@
                     '<div class="empty-state">Error loading alerts</div>';
             }
         }
-
         // Auto-refresh every 5 seconds
         function startAutoRefresh() {
             setInterval(() => {
@@ -432,7 +425,6 @@
                 checkConnection();
             }, 5000);
         }
-
         // Initialize
         checkConnection();
         loadDevices();
@@ -442,4 +434,3 @@
     </script>
 </body>
 </html>
-

@@ -10,15 +10,12 @@ import logging
 import os
 import threading
 from typing import Callable, Optional
-
 import paho.mqtt.client as mqtt
-
 from .device_registry import registry
 from .rules import RuleEngine, default_engine
 from .storage import storage
 
 logger = logging.getLogger("ManagerMQTT")
-
 
 class ManagerMQTT:
     def __init__(
@@ -30,7 +27,7 @@ class ManagerMQTT:
         telemetry_topic: str = "telemetry/+/+",
         engine_factory: Callable[[any], RuleEngine] = default_engine,
     ):
-        # Permite configuração via variáveis de ambiente (útil para Docker)
+        # Allows configuration via environment variables
         self.broker = broker or os.getenv("MQTT_BROKER", "localhost")
         self.port = port or int(os.getenv("MQTT_PORT", "1883"))
         self.username = username or os.getenv("MQTT_USERNAME")
@@ -39,7 +36,6 @@ class ManagerMQTT:
         self.client = mqtt.Client()
         self.engine = engine_factory(storage)
         self._lock = threading.Lock()
-
     def start(self) -> None:
         if self.username and self.password:
             self.client.username_pw_set(self.username, self.password)
@@ -49,12 +45,10 @@ class ManagerMQTT:
         thread = threading.Thread(target=self.client.loop_forever, daemon=True)
         thread.start()
         logger.info("Manager MQTT bridge started")
-
     def _on_connect(self, client, userdata, flags, rc):
         logger.info("Connected to MQTT broker with result code %s", rc)
         client.subscribe(self.telemetry_topic)
         logger.info("Subscribed to telemetry topic pattern %s", self.telemetry_topic)
-
     def _on_message(self, client, userdata, msg):
         try:
             payload = json.loads(msg.payload.decode("utf-8"))
@@ -72,11 +66,8 @@ class ManagerMQTT:
                     logger.info("Published command to %s: %s", res.command_topic, res.command_payload)
         except Exception as exc:
             logger.exception("Error handling MQTT message: %s", exc)
-
     def publish_command(self, topic: str, payload: dict) -> None:
         with self._lock:
             self.client.publish(topic, json.dumps(payload), qos=1)
             logger.info("Manual command published to %s: %s", topic, payload)
-
-
 manager_mqtt = ManagerMQTT()

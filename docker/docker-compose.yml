@@ -15,7 +15,7 @@ services:
     networks:
       - aqua_sense_net
     restart: unless-stopped
-    # Configuração básica do Mosquitto (sem autenticação para desenvolvimento)
+    # Basic configuration of Mosquitto (without autentication for developing purposes)
     command: mosquitto -c /mosquitto/config/mosquitto.conf
 
   # Manager (Data Collector & REST API)
@@ -49,14 +49,4 @@ services:
 networks:
   aqua_sense_net:
     driver: bridge
-
-# Nota: Os dispositivos IoT (rain_sensor, water_sensor, etc.)
-# devem ser executados localmente ou em containers separados
-# pois precisam de interação do usuário e logs visíveis.
-# 
-# Para executar os dispositivos:
-# python devices/rain_sensor.py
-# python devices/water_sensor.py
-# python devices/emergency_light.py
-# python devices/notification_hub.py
 

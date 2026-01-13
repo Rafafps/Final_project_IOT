@@ -15,28 +15,29 @@ AQUA_SENSE is a distributed IoT-based system for monitoring and managing water r
 ## Project Structure
 ```
 Final_project_IOT/
-├── README.md                    # Main documentation
-├── requirements.txt             # Python dependencies
+├── dashboard                     
+├── data
 ├── devices/                     # IoT Devices (emulated)
 │   ├── rain_sensor.py
 │   ├── water_sensor.py
 │   ├── emergency_light.py
 │   └── notification_hub.py
+├── docker
+├── docs
+├── logs
 ├── manager/                     # Data Collector & Manager
-│   ├── api_server.py           # FastAPI REST API
-│   ├── mqtt_client.py          # MQTT bridge
-│   ├── rules.py                # Rules engine
-│   ├── storage.py              # SQLite storage
-│   └── device_registry.py      # Device registry
-├── docs/                        # 📚 Documentation
-│   ├── guides/                 # Usage guides
-│   └── architecture/           # Architecture diagrams
-├── presentation/                # 🎤 Presentation materials
-├── docker/                      # 🐳 Docker files
-└── mosquitto/                   # MQTT broker data
+│   ├── api_server.py
+|   ├── aqua_sense.db   
+|   ├── device_registry.py
+|   ├── main.py        
+│   ├── mqtt_client.py          
+│   ├── rules.py                
+│   ├── storage.py              
+├── presentation
+├── .gitignore
+├── README.md
+├── requirements.txt
 ```
-
-> **See [`STRUCTURE.md`](STRUCTURE.md) for detailed structure and [`docs/README.md`](docs/README.md) for documentation index.**
 
 ## Installation
 1. Clone this repository:

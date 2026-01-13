@@ -8,7 +8,6 @@ Responsibilities:
 The goal is to keep persistence simple but reliable enough for the demo.
 """
 from __future__ import annotations
-
 import json
 import sqlite3
 import threading
@@ -16,7 +15,6 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 DB_FILE = Path(__file__).resolve().parent / "aqua_sense.db"
-
 
 class Storage:
     """Thread-safe, minimal SQLite wrapper."""
