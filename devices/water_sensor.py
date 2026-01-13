@@ -1,8 +1,8 @@
 """
-Watwer Level Sensor Emulator
+Water Level Sensor Emulator
 
-THis module simulates an IOT water level sensor.The device periodically generates
-synthetic water level mesurements (in centimeters) and publishes them as telemetry
+This module simulates an IoT water level sensor. The device periodically generates
+synthetic water level measurements (in centimeters) and publishes them as telemetry
 events to an MQTT broker. The sensor is part of the AQUA-SENSE flood monitoring system.
 """
 import paho.mqtt.client as mqtt
