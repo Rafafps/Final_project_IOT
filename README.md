@@ -80,12 +80,6 @@ While the overall structure is three-tier, **communication between tiers uses an
 - **Portable**: Database file can be easily backed up/moved
 - **Note**: In production, would migrate to PostgreSQL or TimescaleDB for better scalability
 
-### Why Docker?
-- **Reproducibility**: Same environment across development and deployment
-- **Isolation**: MQTT broker and manager run in separate containers
-- **Easy deployment**: Single `docker-compose up` command
-- **Learning objective**: Demonstrates containerization concepts
-
 ## Features
 - Real-time water level and rainfall monitoring
 - Automated flood detection with configurable thresholds
@@ -93,7 +87,6 @@ While the overall structure is three-tier, **communication between tiers uses an
 - Alert notification system
 - REST API for integration with external systems
 - Web dashboard for visualization
-- Docker containerization for easy deployment
 
 ## Data Flows
 
