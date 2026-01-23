@@ -272,6 +272,7 @@ See `docs/diagrams/` for:
 
 **Rafaella Pinheiro**  
 Project developed for the Distributed and IoT Software Architectures course.
+Score of the project: 30/30
 
 ---
 
